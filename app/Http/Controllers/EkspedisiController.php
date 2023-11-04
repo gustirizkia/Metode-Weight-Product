@@ -76,12 +76,17 @@ class EkspedisiController extends Controller
         $sum_Nilai_s = $niliai_S_Ekspedisi->sum("value_s");
 
         foreach($items as $key => $ekspedisi){
-            $items[$key]->value_v = number_format($niliai_S_Ekspedisi->where("ekspedisi_id", $ekspedisi->id)->first()["value_s"] / $sum_Nilai_s, 2);
-            $count = DB::table("penilaian_ekspedisi")
-                                            ->where("ekspedisi_id", $ekspedisi->id)
-                                            ->groupBy("user_id")
-                                            ->get();
-            $items[$key]->count_penilaian = count($count);
+            if($sum_Nilai_s){
+                $items[$key]->value_v = number_format($niliai_S_Ekspedisi->where("ekspedisi_id", $ekspedisi->id)->first()["value_s"] / $sum_Nilai_s, 2);
+                $count = DB::table("penilaian_ekspedisi")
+                                                ->where("ekspedisi_id", $ekspedisi->id)
+                                                ->groupBy("user_id")
+                                                ->get();
+                $items[$key]->count_penilaian = count($count);
+            }else{
+                $items[$key]->value_v = 0;
+                $items[$key]->count_penilaian = 0;
+            }
 
         }
 
