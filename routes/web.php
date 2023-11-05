@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\HomeController;
@@ -19,8 +20,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::prefix('backend')->group(function () {
+Route::prefix('backend')->middleware("admin")->group(function () {
     Route::resource("mitra", MitraController::class);
+    Route::resource("admin", AdminController::class);
     Route::resource("ekspedisi", EkspedisiController::class);
     Route::resource("variable-penilaian", VariablePenilaianController::class);
 });
@@ -31,4 +33,5 @@ Route::post("/prosesPenilaian", [HomeController::class, "prosesPenilaian"])->nam
 Route::get("login", [AuthController::class, "login"])->name("login");
 Route::post("prosesLogin", [AuthController::class, "prosesLogin"])->name("prosesLogin");
 
-Route::get("/", [HomeController::class, "index"]);
+Route::get("/", [HomeController::class, "index"])->name("home");
+Route::get("/home", [HomeController::class, "index"]);

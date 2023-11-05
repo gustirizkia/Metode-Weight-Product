@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class MitraController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +14,10 @@ class MitraController extends Controller
     public function index()
     {
         $items = User::orderBy("id", "desc")
-                    ->where("roles", 'user')
-                    ->get();
+                ->where("roles", "admin")
+                ->get();
 
-        return view("pages.mitra.index", [
+        return view("pages.admin.index", [
             'items' => $items
         ]);
     }
@@ -27,7 +27,7 @@ class MitraController extends Controller
      */
     public function create()
     {
-        return view("pages.mitra.create");
+        return view("pages.admin.create");
     }
 
     /**
@@ -39,10 +39,12 @@ class MitraController extends Controller
 
         $data["password"] = Hash::make($request->password);
 
+        $data['roles'] = "admin";
+
         $user = User::create($data);
 
         return redirect()
-                ->route("mitra.index")
+                ->route("admin.index")
                 ->with("success", "Berhasil tambah data baru");
     }
 
@@ -61,7 +63,7 @@ class MitraController extends Controller
     {
         $user = User::findOrFail($id);
 
-        return view("pages.mitra.edit", [
+        return view("pages.admin.edit", [
             'user' => $user
         ]);
     }
@@ -72,10 +74,13 @@ class MitraController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->except("_token", "_method", "password_confirmation");
+
+        $data["password"] = Hash::make($request->password);
+
         $user = User::where("id", $id)->update($data);
 
         return redirect()
-                ->route("mitra.index")
+                ->route("admin.index")
                 ->with("success", "Berhasil update data");
 
     }
@@ -89,7 +94,7 @@ class MitraController extends Controller
         $user->delete();
 
         return redirect()
-                ->route("mitra.index")
+                ->route("admin.index")
                 ->with("success", "Berhasil hapus data");
 
     }
