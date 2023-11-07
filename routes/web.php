@@ -35,3 +35,11 @@ Route::post("prosesLogin", [AuthController::class, "prosesLogin"])->name("proses
 
 Route::get("/", [HomeController::class, "index"])->name("home");
 Route::get("/home", [HomeController::class, "index"]);
+
+Route::get('/logout', function () {
+    auth()->logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+
+    return redirect('/');
+})->name('logout')->middleware("auth");

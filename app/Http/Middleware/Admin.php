@@ -16,10 +16,10 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if(!auth()->user()){
-            return abort(404);
+            return redirect("/login");
 
         }else if(auth()->user()->roles !== "admin"){
-                return abort(404);
+                return redirect("/login");
         }
 
 
