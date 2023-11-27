@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>@yield('title', "ADMIN")</title>
+    <title>@yield('title', 'ADMIN')</title>
 
     <!-- Custom fonts for this template-->
     <link href="/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -43,27 +43,32 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route("ekspedisi.index") }}">
+                <a class="nav-link" href="{{ route('ekspedisi.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Ekspedisi</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route("variable-penilaian.index") }}">
+                <a class="nav-link" href="{{ route('variable-penilaian.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Variable Penilaian</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route("mitra.index") }}">
+                <a class="nav-link" href="{{ route('mitra.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Mitra</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route("admin.index") }}">
+                <a class="nav-link" href="{{ route('admin.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Admin</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route("logout") }}">
+                <a class="nav-link" href="{{ route('editProfile') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Edit Profile</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('logout') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Logout</span></a>
             </li>
@@ -95,11 +100,11 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">@yield('title', "ADMIN")</h1>
+                    <h1 class="h3 mb-4 text-gray-800">@yield('title', 'ADMIN')</h1>
 
-                    @if (Session::get("success"))
+                    @if (Session::get('success'))
                         <div class="alert alert-success" role="alert">
-                            {{ Session::get("success") }}
+                            {{ Session::get('success') }}
                         </div>
                     @endif
 

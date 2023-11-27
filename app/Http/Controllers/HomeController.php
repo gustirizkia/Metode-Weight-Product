@@ -9,20 +9,21 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $kurir = DB::table("ekspedisi")->orderBy("id", "desc")->get();
+        $kurir = DB::table("ekspedisi")->get();
 
         return view("pages.frontend.home", [
             'kurir' => $kurir
         ]);
     }
 
-    public function penilaian($id_ekspedisi){
-        $variable = DB::table("variable_penilaian")->orderBy("id", "desc")->get();
+    public function penilaian($id_ekspedisi)
+    {
+        $variable = DB::table("variable_penilaian")->get();
         $ekspedisi = DB::table("ekspedisi")->find($id_ekspedisi);
         $cek = DB::table("penilaian_ekspedisi")->where("user_id", auth()->user()->id)
-                ->where("ekspedisi_id", $id_ekspedisi)->first();
+            ->where("ekspedisi_id", $id_ekspedisi)->first();
 
-        if($cek){
+        if ($cek) {
             return redirect()->back();
         }
 
@@ -30,12 +31,11 @@ class HomeController extends Controller
             'variable' => $variable,
             'kurir' => $ekspedisi
         ]);
-
     }
 
     public function prosesPenilaian(Request $request)
     {
-        foreach($request->variable as $key => $var){
+        foreach ($request->variable as $key => $var) {
             DB::table("penilaian_ekspedisi")->insert([
                 'ekspedisi_id' => $request->ekspedisi_id,
                 'penialian_id' => $key,
@@ -46,5 +46,4 @@ class HomeController extends Controller
 
         return redirect("/");
     }
-
 }

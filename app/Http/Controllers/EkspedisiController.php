@@ -12,15 +12,14 @@ class EkspedisiController extends Controller
      */
     public function index()
     {
-        $items = DB::table("ekspedisi")->orderBy("id")->get();
+        $items = DB::table("ekspedisi")->orderBy("id", "desc")->get();
 
         $ekspedisi = DB::table("ekspedisi")
-                    ->get();
+            ->get();
 
         $niliai_S_Ekspedisi = collect();
 
-        foreach($ekspedisi as $idx => $itemEKspedisi)
-        {
+        foreach ($ekspedisi as $idx => $itemEKspedisi) {
 
             // untuk Kriteria
             $criteria = DB::table("variable_penilaian")->get();
@@ -38,56 +37,52 @@ class EkspedisiController extends Controller
             }
 
             $sPenialian = collect();
-            foreach($weight as $key => $item){
+            foreach ($weight as $key => $item) {
 
                 $sum_penilaian  = DB::table("penilaian_ekspedisi")
-                                    // ->where("ekspedisi_id", $item['id'])
-                                    ->groupBy("ekspedisi_id")
-                                    ->where("penialian_id", $item["id"])
-                                    ->select(DB::raw("SUM(value_nilai) as sum_value_nilai"), "penilaian_ekspedisi.*",
-                                        DB::raw("COUNT(*) as total_row")
-                                    )
-                                    ->get();
-                foreach($sum_penilaian as $sumP){
+                    // ->where("ekspedisi_id", $item['id'])
+                    ->groupBy("ekspedisi_id")
+                    ->where("penialian_id", $item["id"])
+                    ->select(
+                        DB::raw("SUM(value_nilai) as sum_value_nilai"),
+                        "penilaian_ekspedisi.*",
+                        DB::raw("COUNT(*) as total_row")
+                    )
+                    ->get();
+                foreach ($sum_penilaian as $sumP) {
                     $sumP->s = number_format(pow($sumP->sum_value_nilai, $item["value"]), 2);
                     $sPenialian->push($sumP);
-
                 }
-
             }
 
             $jumlahNilaiS = 0;
-            foreach($sPenialian->where("ekspedisi_id", $itemEKspedisi->id) as $SP){
+            foreach ($sPenialian->where("ekspedisi_id", $itemEKspedisi->id) as $SP) {
                 if ($jumlahNilaiS === 0) {
                     $jumlahNilaiS = $SP->s;
-                }else{
+                } else {
                     $jumlahNilaiS *= $SP->s;
                 }
-
             }
             $niliai_S_Ekspedisi->push([
                 "ekspedisi_id" => $itemEKspedisi->id,
                 "value_s" => $jumlahNilaiS
             ]);
-
-
         }
 
         $sum_Nilai_s = $niliai_S_Ekspedisi->sum("value_s");
 
-        foreach($items as $key => $ekspedisi){
-            if($sum_Nilai_s){
+        foreach ($items as $key => $ekspedisi) {
+            if ($sum_Nilai_s) {
                 $items[$key]->value_v = number_format($niliai_S_Ekspedisi->where("ekspedisi_id", $ekspedisi->id)->first()["value_s"] / $sum_Nilai_s, 2);
                 $count = DB::table("penilaian_ekspedisi")
-                                                ->where("ekspedisi_id", $ekspedisi->id)
-                                                ->groupBy("user_id")
-                                                ->get();
+                    ->where("ekspedisi_id", $ekspedisi->id)
+                    ->groupBy("user_id")
+                    ->get();
                 $items[$key]->count_penilaian = count($count);
-            }else{
+            } else {
                 $items[$key]->value_v = 0;
                 $items[$key]->count_penilaian = 0;
             }
-
         }
 
         return view("pages.ekspedisi.index", [
@@ -131,14 +126,13 @@ class EkspedisiController extends Controller
     public function edit(string $id)
     {
         $item = DB::table("ekspedisi")->find($id);
-        if(!$item){
+        if (!$item) {
             return redirect()->back()->with("error", "Data tidak ditemukan");
         }
 
         return view("pages.ekspedisi.edit", [
             'item' => $item
         ]);
-
     }
 
     /**
@@ -148,7 +142,7 @@ class EkspedisiController extends Controller
     {
         $data = $request->except("_token", "_method");
 
-        if($request->image){
+        if ($request->image) {
             $data['image'] = $request->image->store("ekspedisi", "public");
         }
 

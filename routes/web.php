@@ -25,6 +25,8 @@ Route::prefix('backend')->middleware("admin")->group(function () {
     Route::resource("admin", AdminController::class);
     Route::resource("ekspedisi", EkspedisiController::class);
     Route::resource("variable-penilaian", VariablePenilaianController::class);
+    Route::get("edit-profile", [AuthController::class, "editProfile"])->name("editProfile");
+    Route::post("updateProfile", [AuthController::class, "updateProfile"])->name("updateProfile");
 });
 
 Route::get("/penilaian/{id_ekspedisi}", [HomeController::class, "penilaian"])->name("penilaian")->middleware("auth");
