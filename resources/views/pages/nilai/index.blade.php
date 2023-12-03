@@ -26,7 +26,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $item->value_v }}
+                                    {{ $item->value_v * 100 }}%
                                 </td>
                                 <td>
                                     {{ $item->count_penilaian }}
