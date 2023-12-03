@@ -53,6 +53,11 @@
                     <span>Variable Penilaian</span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('listNilai') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Data Penilaian</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('mitra.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Mitra</span></a>

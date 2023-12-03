@@ -24,6 +24,7 @@ Route::prefix('backend')->middleware("admin")->group(function () {
     Route::resource("mitra", MitraController::class);
     Route::resource("admin", AdminController::class);
     Route::resource("ekspedisi", EkspedisiController::class);
+    Route::get("data-penilaian", [EkspedisiController::class, 'listNilai'])->name("listNilai");
     Route::resource("variable-penilaian", VariablePenilaianController::class);
     Route::get("edit-profile", [AuthController::class, "editProfile"])->name("editProfile");
     Route::post("updateProfile", [AuthController::class, "updateProfile"])->name("updateProfile");

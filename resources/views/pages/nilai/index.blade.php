@@ -1,21 +1,20 @@
 @extends('layouts.admin')
 
 @section('title')
-    variable-penilaian
+    Data Penilaian
 @endsection
 
 @section('content')
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('variable-penilaian.create') }}" class="btn btn-primary">Tambah Data</a>
 
             <div class="table-responsive mt-4">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Questioner</th>
-                            <th scope="col">Bobot Penilaian</th>
-                            <th scope="col">Aksi</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Nilai</th>
+                            <th scope="col">Banyak Penilaian</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,21 +24,14 @@
                                 <td>
                                     {{ $item->nama }}
                                 </td>
-                                <td>
-                                    {{ $item->kriteria }}
-                                </td>
 
                                 <td>
-                                    <div class="d-flex">
-                                        <a href="{{ route('variable-penilaian.edit', $item->id) }}"
-                                            class="btn btn-success btn-sm">Edit</a>
-                                        <form action="{{ route('variable-penilaian.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm ml-3">Hapus</button>
-                                        </form>
-                                    </div>
+                                    {{ $item->value_v }}
                                 </td>
+                                <td>
+                                    {{ $item->count_penilaian }}
+                                </td>
+
                             </tr>
                         @empty
                             <tr>
